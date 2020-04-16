@@ -16,6 +16,7 @@ C:\Users\Example\Downloads\toast64.exe \
   --title "Hello World" \
   --message "Lorem ipsum dolor sit amet, consectetur adipiscing elit." \
   --icon "C:\Users\Example\Pictures\icon.png" \
+  --tempfolder "C:\temp\"
   --audio "default" --loop \
   --duration "long" \
   --activation-arg "https://google.com" \

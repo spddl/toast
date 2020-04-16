@@ -170,6 +170,9 @@ type Notification struct {
 	// The audio to play when displaying the toast
 	Audio toastAudio
 
+	// default %TEMP%
+	TempFolder string
+
 	// Whether to loop the audio (default false)
 	Loop bool
 
@@ -202,6 +205,9 @@ func (n *Notification) applyDefaults() {
 	}
 	if n.Audio == "" {
 		n.Audio = Default
+	}
+	if n.TempFolder == "" {
+		n.TempFolder = os.TempDir()
 	}
 }
 
@@ -239,7 +245,7 @@ func (n *Notification) Push() error {
 	if err != nil {
 		return err
 	}
-	return invokeTemporaryScript(xml)
+	return invokeTemporaryScript(xml, n)
 }
 
 // Returns a toastAudio given a user-provided input (useful for cli apps).
@@ -340,9 +346,9 @@ func Duration(name string) (toastDuration, error) {
 	}
 }
 
-func invokeTemporaryScript(content string) error {
+func invokeTemporaryScript(content string, n *Notification) error {
 	id, _ := uuid.NewV4()
-	file := filepath.Join(os.TempDir(), id.String()+".ps1")
+	file := filepath.Join(n.TempFolder, id.String()+".ps1")
 	defer os.Remove(file)
 	bomUtf8 := []byte{0xEF, 0xBB, 0xBF}
 	out := append(bomUtf8, []byte(content)...)

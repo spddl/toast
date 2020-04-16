@@ -5,7 +5,8 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/toast.v1"
+	// "gopkg.in/toast.v1"
+	".."
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -66,6 +67,10 @@ func main() {
 			Value: "silent",
 			Usage: "which kind of audio should be played",
 		},
+		cli.StringFlag{
+			Name:  "tempfolder, temp",
+			Usage: "temp folder for that Powershell script",
+		},
 		cli.BoolFlag{
 			Name:  "loop",
 			Usage: "whether to loop the audio",
@@ -85,6 +90,7 @@ func main() {
 		activationType := c.String("activation-type")
 		activationArg := c.String("activation-arg")
 		audio, _ := toast.Audio(c.String("audio"))
+		tempfolder := c.String("tempfolder")
 		duration, _ := toast.Duration(c.String("duration"))
 		loop := c.Bool("loop")
 
@@ -118,6 +124,7 @@ func main() {
 			ActivationType:      activationType,
 			ActivationArguments: activationArg,
 			Audio:               audio,
+			TempFolder:          tempfolder,
 			Loop:                loop,
 			Duration:            duration,
 		}
